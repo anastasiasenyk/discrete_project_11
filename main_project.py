@@ -6,7 +6,7 @@ def create_csv() -> str:
     create trial version of graph
     . not required in project
     """
-    lst_name = [[1, 2], [3, 5], [5, 1]]
+    lst_name = [[1, 2], [3, 5], [5, 1], [5, 3]]
     fd = pd.DataFrame(lst_name, columns=['FIRST_V', 'SECOND_V'])
     fd.to_csv('graph_trial.csv')
     return 'graph_trial.csv'
@@ -27,11 +27,11 @@ def read_data(path_to_file: str) -> dict:
     graph_dict = {}
 
     # граф орієнтований
-    for index, row in file.iterrows():
+    for _, row in file.iterrows():
         if row['FIRST_V'] not in graph_dict.keys():
-            graph_dict[row['FIRST_V']] = row['SECOND_V']
+            graph_dict[str(row['FIRST_V'])] = str(row['SECOND_V'])
         else:
-            graph_dict[row['FIRST_V']].append(row['SECOND_V'])
+            graph_dict[str(row['FIRST_V'])].append(str(row['SECOND_V']))
 
     return graph_dict
 
