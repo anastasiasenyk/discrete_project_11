@@ -1,22 +1,12 @@
 """"task 7 group 11"""
 
 
-def create_csv() -> str:
-    """
-    create trial version of graph
-    . not required in project
-    """
-    lst_name = [[1, 2], [3, 5], [5, 1], [5, 3]]
-    fd = pd.DataFrame(lst_name, columns=['FIRST_V', 'SECOND_V'])
-    fd.to_csv('graph_trial.csv')
-    return 'graph_trial.csv'
-
-
-def read_data(path_to_file: str) -> dict:
+def read_data(path_to_file: str, oriented: bool) -> dict:
     """
     create a dictionary with graph vertices
     Args:
         path_to_file: path to csv file
+        oriented: bool
 
     Returns:
         graph_dict: dict of vertices
@@ -26,13 +16,23 @@ def read_data(path_to_file: str) -> dict:
     file = pd.read_csv(path_to_file, index_col=0)
     graph_dict = {}
 
-    # граф орієнтований
     for _, row in file.iterrows():
-        if row['FIRST_V'] not in graph_dict.keys():
-            graph_dict[str(row['FIRST_V'])] = str(row['SECOND_V'])
-        else:
-            graph_dict[str(row['FIRST_V'])].append(str(row['SECOND_V']))
-
+        vert1 = str(row['vertex1'])
+        vert2 = str(row['vertex2'])
+        if oriented:  # graph is oriented
+            if vert1 not in graph_dict.keys():
+                graph_dict[vert1] = [vert2]
+            else:
+                graph_dict[vert1].append(vert2)
+        else:  # graph is not oriented
+            if vert1 not in graph_dict.keys():
+                graph_dict[vert1] = [vert2]
+            else:
+                graph_dict[vert1].append(vert2)
+            if vert2 not in graph_dict.keys():
+                graph_dict[vert2] = [vert1]
+            else:
+                graph_dict[vert2].append(vert1)
     return graph_dict
 
 
@@ -40,4 +40,13 @@ if __name__ == '__main__':
     import pandas as pd
     import os.path
 
-    print(read_data(create_csv()))
+    answer = input("Do you want graph to be oriented (y/n)? ")
+    while answer not in ("y", "n"):
+        answer = input("Wrong character! Do you want graph to be oriented (y/n)? ")
+    if answer == "y":
+        oriented = True
+    else:
+        oriented = False
+
+    path_to_file = 'graph.csv'  # path to our csv file
+    print(read_data(path_to_file, oriented))
