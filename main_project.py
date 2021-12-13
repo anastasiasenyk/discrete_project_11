@@ -16,8 +16,8 @@ def read_data(path_to_file: str, oriented: bool) -> dict:
     file = pd.read_csv(path_to_file, index_col=0)
     graph_dict = {}
 
-    for _, row in file.iterrows():
-        vert1 = str(row['vertex1'])
+    for index, row in file.iterrows():
+        vert1 = index
         vert2 = str(row['vertex2'])
         if oriented:  # graph is oriented
             if vert1 not in graph_dict.keys():
