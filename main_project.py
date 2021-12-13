@@ -17,7 +17,7 @@ def read_data(path_to_file: str, oriented: bool) -> dict:
     graph_dict = {}
 
     for index, row in file.iterrows():
-        vert1 = index
+        vert1 = str(index)
         vert2 = str(row['vertex2'])
         if oriented:  # graph is oriented
             if vert1 not in graph_dict.keys():
@@ -36,6 +36,39 @@ def read_data(path_to_file: str, oriented: bool) -> dict:
     return graph_dict
 
 
+def bipartite(graph_dict: dict) -> bool:
+    """
+    determine whether our graph is oriented
+    Args:
+        graph_dict: dict of vertices
+
+    Returns:
+        bool: whether the graph is oriented or not
+    """
+    first_vert = list(graph_dict.keys())[0]
+    visited, queue = [first_vert], [first_vert]
+    first_part, second_part = [first_vert],  []
+    while queue:
+        vertex = queue.pop(0)
+
+        for neighbour in graph_dict[vertex]:
+            if neighbour not in visited:
+                visited.append(neighbour)
+                queue.append(neighbour)
+
+            if vertex in first_part:
+                if neighbour in first_part:
+                    return False
+                else:
+                    second_part.append(neighbour)
+            else:
+                if neighbour in second_part:
+                    return False
+                else:
+                    first_part.append(neighbour)
+    return True
+
+
 if __name__ == '__main__':
     import pandas as pd
     import os.path
@@ -49,4 +82,4 @@ if __name__ == '__main__':
         oriented = False
 
     path_to_file = 'graph.csv'  # path to our csv file
-    print(read_data(path_to_file, oriented))
+    print(bipartite(read_data(path_to_file, oriented)))
