@@ -17,7 +17,7 @@ def read_data(path_to_file: str, oriented: bool) -> dict:
     graph_dict = {}
 
     for index, row in file.iterrows():
-        vert1 = index
+        vert1 = str(index)
         vert2 = str(row['vertex2'])
         if oriented:  # graph is oriented
             if vert1 not in graph_dict.keys():
