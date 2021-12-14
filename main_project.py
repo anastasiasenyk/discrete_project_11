@@ -1,12 +1,12 @@
 """"task 7 group 11"""
+from typing import Optional
 
 
-def read_data(path_to_file: str) -> tuple:
+def read_data(path_to_file: str) -> Optional[tuple]:
     """
     create a dictionary with graph vertices
     Args:
         path_to_file: path to csv file
-
     Returns:
         graph_dict: tuple of dict with vertices
     """
@@ -37,15 +37,44 @@ def read_data(path_to_file: str) -> tuple:
     return graph_dict_o, graph_dict_no
 
 
+def ifconnected(graph_dict) -> bool:
+    """
+    check whether all vertices are interconnected or not
+    Args:
+        graph_dict: tuple of dict with vertices
+
+    Returns:
+        bool
+    >>> ifconnected({'1':["2"], '2':["1"], '3':['4']})
+    False
+    """
+    first_vert = list(graph_dict.keys())[0]
+    visited, queue = [first_vert], [first_vert]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex in list(graph_dict.keys()):
+            for neighbour in graph_dict[vertex]:
+                if neighbour not in visited:
+                    visited.append(neighbour)
+                    queue.append(neighbour)
+    for element in list(graph_dict.keys()):
+        if element not in visited:
+            return False
+    return True
+
+
 if __name__ == '__main__':
     import pandas as pd
     import os.path
-    path_to_file = 'graph.csv'  # path to our csv file
+    path_file = 'graph.csv'  # path to our csv file
 
     #  read information from csv
-    graphs = read_data(path_to_file)
-    not_oriented_graph = graphs[0]
-    oriented_graph = graphs[1]
+    graphs = read_data(path_file)
+    not_oriented_graph = graphs[1]
+    oriented_graph = graphs[0]
 
-    #  our functions
-    print()
+    if not ifconnected(not_oriented_graph):  # check if all verticals are connected
+        print('the graph is not connected')
+    else:
+        #  our functions
+        print()
