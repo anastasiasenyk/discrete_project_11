@@ -1,52 +1,50 @@
 """"task 7 group 11"""
 
 
-def read_data(path_to_file: str, oriented: bool) -> dict:
+def read_data(path_to_file: str) -> tuple:
     """
     create a dictionary with graph vertices
     Args:
         path_to_file: path to csv file
-        oriented: bool
 
     Returns:
-        graph_dict: dict of vertices
+        graph_dict: tuple of dict with vertices
     """
     if not os.path.exists(path_to_file):
         return print("file doesn't exist")
     file = pd.read_csv(path_to_file, index_col=0)
-    graph_dict = {}
+    graph_dict_no = {}  # graph is not oriented
+    graph_dict_o = {}  # graph is oriented
 
     for index, row in file.iterrows():
         vert1 = str(index)
         vert2 = str(row['vertex2'])
-        if oriented:  # graph is oriented
-            if vert1 not in graph_dict.keys():
-                graph_dict[vert1] = [vert2]
-            else:
-                graph_dict[vert1].append(vert2)
-        else:  # graph is not oriented
-            if vert1 not in graph_dict.keys():
-                graph_dict[vert1] = [vert2]
-            else:
-                graph_dict[vert1].append(vert2)
-            if vert2 not in graph_dict.keys():
-                graph_dict[vert2] = [vert1]
-            else:
-                graph_dict[vert2].append(vert1)
-    return graph_dict
+
+        if vert1 not in graph_dict_o.keys():   # for oriented graph
+            graph_dict_o[vert1] = [vert2]
+        else:
+            graph_dict_o[vert1].append(vert2)
+
+        if vert1 not in graph_dict_no.keys():   # for not oriented graph
+            graph_dict_no[vert1] = [vert2]
+        else:
+            graph_dict_no[vert1].append(vert2)
+        if vert2 not in graph_dict_no.keys():
+            graph_dict_no[vert2] = [vert1]
+        else:
+            graph_dict_no[vert2].append(vert1)
+
+    return graph_dict_o, graph_dict_no
 
 
 if __name__ == '__main__':
     import pandas as pd
     import os.path
-
-    answer = input("Do you want graph to be oriented (y/n)? ")
-    while answer not in ("y", "n"):
-        answer = input("Wrong character! Do you want graph to be oriented (y/n)? ")
-    if answer == "y":
-        oriented = True
-    else:
-        oriented = False
-
     path_to_file = 'graph.csv'  # path to our csv file
-    print(read_data(path_to_file, oriented))
+
+    #  read information from csv
+    not_oriented_graph = read_data(path_to_file)[0]
+    oriented_graph = read_data(path_to_file)[1]
+
+    #  our functions
+    print()
