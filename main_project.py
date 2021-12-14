@@ -43,8 +43,9 @@ if __name__ == '__main__':
     path_to_file = 'graph.csv'  # path to our csv file
 
     #  read information from csv
-    not_oriented_graph = read_data(path_to_file)[0]
-    oriented_graph = read_data(path_to_file)[1]
+    graphs = read_data(path_to_file)
+    not_oriented_graph = graphs[0]
+    oriented_graph = graphs[1]
 
     #  our functions
     print()
