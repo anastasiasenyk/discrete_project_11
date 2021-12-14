@@ -1,13 +1,12 @@
 """"task 7 group 11"""
+from typing import Optional
 
 
-def read_data(path_to_file: str) -> tuple:
+def read_data(path_to_file: str) -> Optional[tuple]:
     """
     create a dictionary with graph vertices
     Args:
         path_to_file: path to csv file
-        oriented: bool
-
     Returns:
         graph_dict: tuple of dict with vertices
     """
@@ -38,6 +37,32 @@ def read_data(path_to_file: str) -> tuple:
     return graph_dict_o, graph_dict_no
 
 
+def ifconnected(graph_dict) -> bool:
+    """
+    check whether all vertices are interconnected or not
+    Args:
+        graph_dict: tuple of dict with vertices
+
+    Returns:
+        bool
+    >>> ifconnected({'1':["2"], '2':["1"], '3':['4']})
+    False
+    """
+    first_vert = list(graph_dict.keys())[0]
+    visited, queue = [first_vert], [first_vert]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex in list(graph_dict.keys()):
+            for neighbour in graph_dict[vertex]:
+                if neighbour not in visited:
+                    visited.append(neighbour)
+                    queue.append(neighbour)
+    for element in list(graph_dict.keys()):
+        if element not in visited:
+            return False
+    return True
+
+
 def bipartite(graph_dict: dict) -> bool:
     """
     determine whether our graph is bipartite
@@ -47,6 +72,11 @@ def bipartite(graph_dict: dict) -> bool:
 
     Returns:
         bool: whether the graph is bipartite or not
+    >>> bipartite({'1': ['6'], '2': ['3'], \
+    '3': ['6', '1'], '4': ['5'], '7': ['4'], '5': ['2', '3']})
+    True
+    >>> bipartite({'1': ['2'], '2': ['3'], '3': ['1']})
+    False
     """
     first_vert = list(graph_dict.keys())[0]
     visited, queue = [first_vert], [first_vert]
@@ -75,11 +105,15 @@ def bipartite(graph_dict: dict) -> bool:
 if __name__ == '__main__':
     import pandas as pd
     import os.path
-    path_to_file = 'graph.csv'  # path to our csv file
+    path_file = 'graph.csv'  # path to our csv file
 
     #  read information from csv
-    not_oriented_graph = read_data(path_to_file)[0]
-    oriented_graph = read_data(path_to_file)[1]
+    graphs = read_data(path_file)
+    not_oriented_graph = graphs[1]
+    oriented_graph = graphs[0]
 
-    #  our functions
-    print(f'If not oriented graph is bipartite - {bipartite(not_oriented_graph)}')
+    if not ifconnected(not_oriented_graph):  # check if all verticals are connected
+        print('the graph is not connected')
+    else:
+        #  our functions
+        print(f'Graph is bipartite - {bipartite(not_oriented_graph)}')
