@@ -3,7 +3,7 @@ import time
 from itertools import permutations
 
 
-def good_vertices_check(vertice_1: str, vertice_2: str, graph_1: dict, graph_2: dict) -> bool:
+def vertices_check_not_directed(vertice_1: str, vertice_2: str, graph_1: dict, graph_2: dict) -> bool:
     if len(graph_1[vertice_1]) != len(graph_2[vertice_2]):
         return False
     vertice_1_deg = {}
@@ -26,7 +26,7 @@ def good_vertices_check(vertice_1: str, vertice_2: str, graph_1: dict, graph_2: 
         return False
 
 
-def isomorphism_of_graphs(graph_1: dict, graph_2: dict) -> bool:
+def isomorphism_of_not_directed_graphs(graph_1: dict, graph_2: dict) -> bool:
     """
     Checks whether graphs are isomorphic.
     Returns True if they are, False if they don't.
@@ -60,25 +60,95 @@ def isomorphism_of_graphs(graph_1: dict, graph_2: dict) -> bool:
     if edges_1 != edges_2 or deg_graph_1 != deg_graph_2:
         return False
 
-    # граф все-таки ізоморфний?
+    # графи все-таки ізоморфні?
     #!!!спочатку брати вершину з найбільшим степенем!!!
-    
+
     all_variants = tuple(permutations(graph_2.keys()))
     vertices_1 = [vertice for vertice in graph_1.keys()]
     for variant in all_variants:
         for index, vertice_2 in enumerate(variant):
-            if good_vertices_check(vertices_1[index], vertice_2, graph_1, graph_2) == False:
+            if vertices_check_not_directed(vertices_1[index], vertice_2, graph_1, graph_2) is False:
                 break
             else:
                 if index == len(variant) - 1:
                     return True
     return False
+
+
+def isomorphism_of_directed_graphs(graph_1: dict, graph_2: dict) -> bool:
+    """
+    Checks whether graphs are isomorphic.
+    Returns True if they are, False if they don't.
+    """
+    # інваріанти: кількість вершин, степені входу і виходу
+    degs_graph_1 = {}
+    degs_graph_2 = {}
+
+    for vertice, edges in graph_1.items():
+        if vertice not in degs_graph_1.keys():
+            degs_graph_1[vertice] = [0, 0]
+        degs_graph_1[vertice][0] = len(edges)
+        for edge in edges:
+            if edge not in degs_graph_1.keys():
+                degs_graph_1[edge] = [0, 0]
+            degs_graph_1[edge][1] += 1
+
+    for vertice, edges in graph_2.items():
+        if vertice not in degs_graph_2.keys():
+            degs_graph_2[vertice] = [0, 0]
+        degs_graph_2[vertice][0] = len(edges)
+        for edge in edges:
+            if edge not in degs_graph_2.keys():
+                degs_graph_2[edge] = [0, 0]
+            degs_graph_2[edge][1] += 1
     
+    # кількість вершин
+    if len(degs_graph_1.keys()) != len(degs_graph_2.keys()):
+        return False
+    
+    # степені входу, виходу
+    degs_check = {}
+    for degs in degs_graph_1.values():
+        if tuple(degs) not in degs_check.keys():
+            degs_check[tuple(degs)] = 1
+        else:
+            degs_check[tuple(degs)] += 1
+    
+    for degs in degs_graph_2.values():
+        if tuple(degs) not in degs_check.keys():
+            return False
+        else:
+            degs_check[tuple(degs)] -= 1
+            
+    for vertices_number in degs_check.values():
+        if vertices_number != 0:
+            return False 
+
+        
 
 
 
 
-print(time.time())
-print(isomorphism_of_graphs({'4': ['3', '2'], '3': ['1', '4'], '1': ['2', '3'], '2': [
-      '1', '4']}, {'1': ['3', '4'], '3': ['1', '2'], '4': ['1', '2'], '2': ['3', '4']}))
-print(time.time())
+
+
+    # графи все-таки ізоморфні?
+    #!!!спочатку брати вершину з найбільшим степенем!!!
+
+    # all_variants = tuple(permutations(graph_2.keys()))
+    # vertices_1 = [vertice for vertice in graph_1.keys()]
+    # for variant in all_variants:
+    #     for index, vertice_2 in enumerate(variant):
+    #         if vertices_check_directed(vertices_1[index], vertice_2, graph_1, graph_2) == False:
+    #             break
+    #         else:
+    #             if index == len(variant) - 1:
+    #                 return True
+    # return False
+
+
+start = time.time()
+print(isomorphism_of_directed_graphs({'1': ['3', '4'], '2': ['3'], '4': ['2']}, {'1': ['3', '4'], '2': ['3'], '4': ['2']}))
+# print(isomorphism_of_not_directed_graphs({'a': ['b'], 'b': ['a', 'c'], 'c': ['b', 'd', 'g'], 'g': ['c'], 'd': ['e', 'c'], 'e': ['d', 'f', 'h'], 'h': [
+#       'e'], 'f': ['e']}, {'a': ['b'], 'b': ['a', 'c', 'g'], 'c': ['b', 'd'], 'g': ['b'], 'd': ['e', 'c'], 'e': ['d', 'f', 'h'], 'h': ['e'], 'f': ['e']}))
+finish = time.time()
+print(finish-start)
