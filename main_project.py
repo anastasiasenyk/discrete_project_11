@@ -13,8 +13,8 @@ def read_data(path_to_file: str) -> Optional[tuple]:
     if not os.path.exists(path_to_file):
         return print("file doesn't exist")
     file = pd.read_csv(path_to_file, index_col=0)
-    graph_dict_no = {}  # graph is not oriented
-    graph_dict_o = {}  # graph is oriented
+    graph_dict_no = {c1[0]:[c1[1]], c1[1]:[c1[0]]}  # graph is not oriented
+    graph_dict_o = {c1[0]:[c1[1]]}  # graph is oriented
 
     for index, row in file.iterrows():
         vert1 = str(index)
