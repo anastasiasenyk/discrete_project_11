@@ -15,14 +15,10 @@ def is_euler_possible_not_directed(graph_dict: dict) -> bool:
 
     for _, item in graph_dict.items():
         multiplicity.append(len(item))
-    num_of_odd = 0
 
     for i in range(len(multiplicity)):
         if multiplicity[i] % 2 == 1:
-            num_of_odd += 1
-
-    if num_of_odd > 0:
-        return False
+            return False
     return True
 
 
@@ -79,17 +75,13 @@ def is_euler_possible_directed(graph_dict: dict) -> bool:
     >>> is_euler_possible_directed({1: [2], 2: [3], 3: [1, 2]})
     False
     """
-    counter_of_bad_vertices = 0
 
     for key in graph_dict:
         enter = list(value for value in graph_dict.values()).count([key])
         exit = len(graph_dict[key])
 
         if enter != exit:
-            counter_of_bad_vertices += 1
-
-    if counter_of_bad_vertices > 0:
-        return False
+            return False
     return True
 
 
