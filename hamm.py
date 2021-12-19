@@ -72,7 +72,7 @@ def hamiltonianCycle(graph, visited, path, v, lenght):
             return path
         else:
             return False
-    item = list(graph.keys())lst[v]
+    item = list(graph.keys())[v]
     for element in graph[item]:
         if element not in visited:
             visited.append(element)
