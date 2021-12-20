@@ -103,7 +103,6 @@ def bipartite(graph_dict: dict) -> bool:
                         first_part.append(neighbour)
     return True
 
-
 def is_euler_possible_not_directed(graph_dict: dict) -> bool:
     """
     Checks whether a not directed graph has Eulerian circuit or not
@@ -112,8 +111,7 @@ def is_euler_possible_not_directed(graph_dict: dict) -> bool:
         and keys are lists of connected vertices
     Returns:
         bool: True if the graph_dict has Eulerian circuit False if not
-    >>> is_euler_possible_not_directed({'1': ['2', '3', '4'], '2': ['1', '3'],\
-     '3': ['1', '2'], '4': ['1', '5'], '5': ['4']})
+    >>> is_euler_possible_not_directed({'1': ['2', '3', '4'], '2': ['1', '3'], '3': ['1', '2'], '4': ['1', '5'], '5': ['4']})
     False
     >>> is_euler_possible_not_directed({'1': ['2', '3'], '2': ['1', '3'], '3': ['1', '2']})
     True
@@ -127,46 +125,6 @@ def is_euler_possible_not_directed(graph_dict: dict) -> bool:
         if multiplicity[i] % 2 == 1:
             return False
     return True
-
-
-def euler_circuit_not_directed(graph_dict: dict) -> list:
-    """
-    Returns Eulerian circuit in not directed graph
-    Args:
-        graph_dict: dictionary where keys are vertices
-        and keys are lists of connected vertices
-    Retuns:
-        list: list of vertices whiсh form Euler circuit
-        str: message that graph_dict is not connected
-    >>> euler_circuit_not_directed({'1': ['4', '2'], \
-    '2': ['1', '3', '6', '5'], \
-    '3': ['2','4'], \
-    '4': ['1', '3'], \
-    '5': ['2', '6'], \
-    '6': ['2', '5']})
-    ['1', '2', '5', '6', '2', '3', '4', '1']
-    """
-    if is_euler_possible_not_directed(graph_dict) is False:
-        return "Graph has no Eulerial circuit"
-
-    else:
-        stack = [list(graph_dict.keys())[0]]
-        circuit = []
-        while stack:
-            curr_vertex = stack[-1]
-            if len(graph_dict[curr_vertex]) == 0:
-                circuit.append(curr_vertex)
-                stack.pop(-1)
-            else:
-                random_edge = graph_dict[curr_vertex][0]
-                graph_dict[curr_vertex].remove(random_edge)
-                graph_dict[random_edge].remove(curr_vertex)
-                stack.append(random_edge)
-
-        for key in graph_dict:
-            if key not in circuit:
-                return "Graph is not connected"
-    return circuit
 
 
 def is_euler_possible_directed(graph_dict: dict) -> bool:
@@ -192,42 +150,49 @@ def is_euler_possible_directed(graph_dict: dict) -> bool:
     return True
 
 
-def euler_circuit_directed(graph_dict: dict) -> list:
+def euler_circuit(graph_dict: dict, orientation: bool) -> list:
     """
-    Returns Eulerian circuit in a directed graph
+    Returns Eulerian circuit in not directed graph
     Args:
         graph_dict: dictionary where keys are vertices
         and keys are lists of connected vertices
-    Return:
+    Retuns:
         list: list of vertices whiсh form Euler circuit
         str: message that graph_dict is not connected
-    >>> euler_circuit_not_directed({'1': ['4', '2'],\
+    >>> euler_circuit({'1': ['4', '2'], \
     '2': ['1', '3', '6', '5'], \
     '3': ['2','4'], \
     '4': ['1', '3'], \
     '5': ['2', '6'], \
-    '6': ['2', '5']})
+    '6': ['2', '5']}, False)
     ['1', '2', '5', '6', '2', '3', '4', '1']
     """
-    if is_euler_possible_directed(graph_dict) is False:
-        return "Graph has no Eulerial circuit"
 
-    else:
-        stack = [list(graph_dict.keys())[0]]
-        circuit = []
-        while stack:
-            curr_vertex = stack[-1]
-            if len(graph_dict[curr_vertex]) == 0:
-                circuit.append(curr_vertex)
-                stack.pop(-1)
-            else:
-                random_edge = graph_dict[curr_vertex][0]
+    if orientation is False:
+        if is_euler_possible_not_directed(graph_dict) is False:
+            return "Graph has no Eulerial circuit"
+    elif orientation is True:
+        if is_euler_possible_directed(graph_dict) is False:
+            return "Graph has no Eulerial circuit"
+    stack = [list(graph_dict.keys())[0]]
+    circuit = []
+    while stack != []:
+        curr_vertex = stack[-1]
+        if len(graph_dict[curr_vertex]) == 0:
+            circuit.append(curr_vertex)
+            stack.pop(-1)
+        else:
+            random_edge = graph_dict[curr_vertex][0]
+            if orientation is False:
+                graph_dict[curr_vertex].remove(random_edge)
+                graph_dict[random_edge].remove(curr_vertex)
+                stack.append(random_edge)
+            elif orientation is True:
                 graph_dict[curr_vertex].remove(random_edge)
                 stack.append(random_edge)
-
-        for key in graph_dict:
-            if key not in circuit:
-                return "Graph is not connected"
+    for key in graph_dict:
+        if key not in circuit:
+            return "Graph is not connected"
     return circuit
 
 
@@ -303,8 +268,8 @@ if __name__ == '__main__':
             #  our functions
             print(f'Graph is bipartite - {bipartite(not_oriented_graph)}')
             #  euler
-            print(f'Euler cycle for directed graph - {euler_circuit_directed(read_data(path_file)[0])}')
-            print(f'Euler cycle for not directed graph - {euler_circuit_not_directed(read_data(path_file)[1])}')
+            print(f'Euler cycle for directed graph - {euler_circuit(read_data(path_file)[0], True)}')
+            print(f'Euler cycle for not directed graph - {euler_circuit(read_data(path_file)[1], False)}')
             #  hamilton
             print(f"Hamiltonian Cycle for not connected graph: {pre_hamilton(not_oriented_graph, False)}")
             print(f"Hamiltonian Cycle for connected graph: {pre_hamilton(oriented_graph, True)}")
