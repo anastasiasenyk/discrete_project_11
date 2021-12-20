@@ -243,11 +243,11 @@ def pre_hamilton(graph: dict, var_bool: bool):
     visited = [list(graph.keys())[0]]
     path = [list(graph.keys())[0]]
     if not var_bool:
-        path = hamiltonian_cycle(not_oriented_graph, visited, path, 0, length)
+        path = hamiltonian_cycle(graph, visited, path, 0, length)
         if isinstance(path, list):
             return path
     else:
-        path = hamiltonian_cycle(oriented_graph, visited, path, 0, length)
+        path = hamiltonian_cycle(graph, visited, path, 0, length)
         if isinstance(path, list):
             return path
     return "doesn't exist"
