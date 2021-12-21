@@ -1,5 +1,3 @@
-"""5th function"""
-import time
 from itertools import permutations
 
 
@@ -125,59 +123,25 @@ def isomorphism_of_not_directed_graphs(graph_1: dict, graph_2: dict) -> bool:
     if edges_1 != edges_2 or deg_graph_1 != deg_graph_2:
         return False
 
-    # # adjacent vertices check
-    # all_variants = tuple(permutations(graph_2.keys()))
-    # vertices_1 = [vertice for vertice in graph_1.keys()]
-    # for variant in all_variants:
-    #     for index, vertice_2 in enumerate(variant):
-    #         if vertices_check_not_directed(vertices_1[index], vertice_2, graph_1, graph_2) is False:
-    #             break
-    #         else:
-    #             if index == len(variant) - 1:
-    #                 return True
-    # return False
+    # adjacent vertices check
+    all_variants = tuple(permutations(graph_2.keys()))
+    vertices_1 = [vertice for vertice in graph_1.keys()]
+    good_variant = 0
+    for variant in all_variants:
+        if good_variant == 0:
+            for index, vertice_2 in enumerate(variant):
+                if vertices_check_not_directed(vertices_1[index], vertice_2, graph_1, graph_2) is False:
+                    break
+                else:
+                    if index == len(variant) - 1:
+                        good_variant += 1
+    if good_variant == 0:
+        return False
 
     # matrix permutations check
     array_1 = adjacent_matrix(graph_1, False)
     array_2 = adjacent_matrix(graph_2, False)
     return matrix_permutations_comparison(array_1, array_2)
-
-
-def vertices_check_directed(connected_vert_1: list, connected_vert_2: list,
-                            deg_graph_1: dict, deg_graph_2: dict) -> bool:
-    """
-    Check whether two vertices are connected with vertices which have same
-    in-degrees and out-degrees.
-    Args:
-        connected_vert_1: list of adjacent vertices of first vertice
-        connected_vert_2: list of adjacent vertices of second vertice
-        deg_graph_1: dict, where keys are vertices of first graph and 
-            values are lists, where first element is out-degree, second - in-degree
-        deg_graph_2: dict, where keys are vertices of second graph and 
-            values are lists, where first element is out-degree, second - in-degree
-    Returns:
-        bool: True if adjacent vertices of two given vertices have same
-            in-degrees and out-degrees, False if don't
-    """
-    deg_connected_1 = {}
-    deg_connected_2 = {}
-
-    for vert in connected_vert_1:
-        if tuple(deg_graph_1[vert]) not in deg_connected_1.keys():
-            deg_connected_1[tuple(deg_graph_1[vert])] = 1
-        else:
-            deg_connected_1[tuple(deg_graph_1[vert])] += 1
-
-    for vert in connected_vert_2:
-        if tuple(deg_graph_2[vert]) not in deg_connected_2.keys():
-            deg_connected_2[tuple(deg_graph_2[vert])] = 1
-        else:
-            deg_connected_2[tuple(deg_graph_2[vert])] += 1
-
-    if deg_connected_1 == deg_connected_2:
-        return True
-    else:
-        return False
 
 
 def isomorphism_of_directed_graphs(graph_1: dict, graph_2: dict,) -> bool:
@@ -211,11 +175,11 @@ def isomorphism_of_directed_graphs(graph_1: dict, graph_2: dict,) -> bool:
                 degs_graph_2[edge] = [0, 0]
             degs_graph_2[edge][1] += 1
 
-    # equal number of vertices
+    # 1: equal number of vertices
     if len(degs_graph_1.keys()) != len(degs_graph_2.keys()):
         return False
 
-    # in-degrees and out-degrees sequence
+    # 2: in-degrees and out-degrees sequence
     degs_check = {}
     for degs in degs_graph_1.values():
         if tuple(degs) not in degs_check.keys():
@@ -233,34 +197,7 @@ def isomorphism_of_directed_graphs(graph_1: dict, graph_2: dict,) -> bool:
         if vertices_number != 0:
             return False
 
-    # adjacent vertices check
-    # all_variants = tuple(permutations(degs_graph_2.keys()))
-    # vertices_1 = [vertice for vertice in degs_graph_1]
-    
-    # for variant in all_variants:
-    #     for index, vertice_2 in enumerate(variant):
-    #         vertice_1 = vertices_1[index]
-    #         if degs_graph_1[vertice_1] != degs_graph_2[vertice_2]:
-    #             break
-    #         if not vertices_check_directed(vert_connected_1[vertice_1],
-    #                                        vert_connected_2[vertice_2], degs_graph_1, degs_graph_2):
-    #             break
-    #         if index == len(variant) - 1:
-    #             return True
-    # return False
-
     # matrix permutations check
     array_1 = adjacent_matrix(graph_1, True)
     array_2 = adjacent_matrix(graph_2, True)
     return matrix_permutations_comparison(array_1, array_2)
-
-
-start = time.time()
-# print(isomorphism_of_directed_graphs({'a': ['c', 'd'], 'c': [
-#       'b'], 'd': ['b']}, {'a': ['b'], 'b': ['d'], 'c': ['a', 'd']}, {'a': ['c', 'd'], 'c': ['a', 'b'], 'd': ['a', 'b'], 'b': ['c', 'd']}, {'a': ['b', 'c'], 'c': ['a', 'd'], 'd': ['c', 'b'], 'b': ['a', 'd']}))
-# print(isomorphism_of_not_directed_graphs({'1': ['2', '5', '4'], '2': ['1', '5', '3'], '3': [
-#       '2', '6', '4'], '4': ['3', '6', '1'], '5': ['2', '1', '6'], '6': ['5', '3', '4']}, {'a': ['b','f','d'],'b': ['a','e','c'],'c': ['b','f','d'],'d': ['a','c','e'],'e': ['b','f','d'],'f': ['e','c','a']}))
-print(isomorphism_of_not_directed_graphs({'4': ['3', '6', '2', '1'], '3': ['4', '7', '6', '1', '5', '2'], '7': ['3', '2', '6'], '2': ['7', '1', '4', '5', '6', '3'], '6': ['4', '5', '3', '7', '2'], '5': ['6', '3', '2', '1'], '1': [
-      '2', '3', '4', '5']}, {'2': ['3', '4', '5', '1', '3', '4', '6'], '3': ['2', '5', '1', '2', '4', '6'], '6': ['1', '4', '3', '2'], '1': ['6', '2', '3', '5', '4'], '4': ['2', '6', '5', '3', '2', '1'], '5': ['2', '4', '3', '1']}))
-finish = time.time()
-print(finish-start)
