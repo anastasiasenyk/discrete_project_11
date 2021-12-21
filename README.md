@@ -79,6 +79,10 @@ __find hamiltonian cycle:__ Anastasia Senyk, Maksym Koliubinskyi
 
 ![гам (1)](https://user-images.githubusercontent.com/96056537/146945320-4b7915d9-3623-4636-8365-276c7112b6a1.png)
 
+Приклад виводу:
+
+<img width="1280" alt="Screenshot 2021-12-21 at 21 53 00" src="https://user-images.githubusercontent.com/96056537/146989938-d191b8fb-96f5-469b-a9ed-d1c2772f286d.png">
+
 ---
 __Function4:__ Olesia Omelchuk
 <a id="func4"></a>
