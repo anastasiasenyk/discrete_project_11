@@ -2,7 +2,13 @@
 
 
 def read_data(path_to_file: str) -> tuple:
-   
+    """
+    create a dictionary with graph vertices
+    Args:
+        path_to_file: path to csv file
+    Returns:
+        graph_dict: tuple of dict with vertices
+    """
     file = pd.read_csv(path_to_file)
     
     first_elem = file.columns[0].split(' ')
@@ -218,7 +224,7 @@ def hamiltonian_cycle(graph: dict, visited: list, path: list, v: int, length: in
         graph: dictionary where keys are vertices
         visited: list of visited vertexes
         path: cycle
-        v: index of element
+        index: index of element
         length: numbers of element
     Returns:
         list: list of vertices which form Hamilton circuit
