@@ -65,6 +65,12 @@ __find euler circuit:__ Anastasia Beheni
 
 ![ейлерів (1)](https://user-images.githubusercontent.com/96056537/146945599-b91ec113-cbd7-48c9-ad17-5d95b3f09e59.png)
 
+Приклад виводу:
+
+![image_2021-12-21_22-03-36](https://user-images.githubusercontent.com/96056537/146991312-5504f10a-72eb-4b6e-9c84-aa49476010bb.png)
+
+![image_2021-12-21_22-03-36](https://user-images.githubusercontent.com/96056537/146991257-7757c213-4481-4aee-931b-ed0808977442.png)
+
 ---
 __find hamiltonian cycle:__ Anastasia Senyk, Maksym Koliubinskyi
 <a id="func3"></a>
