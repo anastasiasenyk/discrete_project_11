@@ -1,5 +1,4 @@
 """task 7 group 11"""
-from typing import Optional
 
 
 def read_data(path_to_file: str) -> tuple:
