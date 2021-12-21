@@ -13,9 +13,11 @@ def read_data(path_to_file: str) -> Optional[tuple]:
     if not os.path.exists(path_to_file):
         return print("file doesn't exist")
     file = pd.read_csv(path_to_file)
-    c1 = file.columns[0].split(' ')
-    graph_dict_no = {c1[0]: [c1[1]], c1[1]: [c1[0]]}  # graph is not oriented
-    graph_dict_o = {c1[0]: [c1[1]]}  # graph is oriented
+    
+    first_elem = file.columns[0].split(' ')
+    graph_dict_no = {first_elem[0]: [first_elem[1]],\
+                     first_elem[1]: [first_elem[0]]}  # graph is not oriented
+    graph_dict_o = {first_elem[0]: [first_elem[1]]}  # graph is oriented
 
     for index, row in file.iterrows():
         row = list(row)[0].split(' ')
@@ -205,7 +207,8 @@ def pre_hamilton(graph: dict, var_bool: bool):
         var_bool: bool whether graph are oriented
     Returns:
         list: list of vertices which form Hamilton circuit
-        str: message that cycle doesn't exist"""
+        str: message that cycle doesn't exist
+    """
     length = len(list(graph.keys()))
     visited = [list(graph.keys())[0]]
     path = [list(graph.keys())[0]]
