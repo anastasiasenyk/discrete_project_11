@@ -78,22 +78,21 @@ def bipartite(graph_dict: dict) -> bool:
     first_part, second_part = [first_vert],  []
     while queue:
         vertex = queue.pop(0)
-        if vertex in list(graph_dict.keys()):
-            for neighbour in graph_dict[vertex]:
-                if neighbour not in visited:
-                    visited.append(neighbour)
-                    queue.append(neighbour)
+        for neighbour in graph_dict[vertex]:
+            if neighbour not in visited:
+                visited.append(neighbour)
+                queue.append(neighbour)
 
-                if vertex in first_part:
-                    if neighbour in first_part:
-                        return False
-                    else:
-                        second_part.append(neighbour)
+            if vertex in first_part:
+                if neighbour in first_part:
+                    return False
                 else:
-                    if neighbour in second_part:
-                        return False
-                    else:
-                        first_part.append(neighbour)
+                    second_part.append(neighbour)
+            else:
+                if neighbour in second_part:
+                    return False
+                else:
+                    first_part.append(neighbour)
     return True
 
 def is_euler_possible_not_directed(graph_dict: dict) -> bool:
