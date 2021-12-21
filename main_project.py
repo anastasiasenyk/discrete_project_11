@@ -2,14 +2,8 @@
 from typing import Optional
 
 
-def read_data(path_to_file: str) -> Optional[tuple]:
-    """
-    create a dictionary with graph vertices
-    Args:
-        path_to_file: path to csv file
-    Returns:
-        graph_dict: tuple of dict with vertices
-    """
+def read_data(path_to_file: str) -> tuple:
+   
     file = pd.read_csv(path_to_file)
     
     first_elem = file.columns[0].split(' ')
