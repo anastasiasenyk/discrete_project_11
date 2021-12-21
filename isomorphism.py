@@ -1,4 +1,67 @@
-from itertools import permutations
+"""Isomorphism check"""
+
+
+def read_data(path_to_file: str) -> tuple:
+    """
+    create a dictionary with graph vertices
+    Args:
+        path_to_file: path to csv file
+    Returns:
+        graph_dict: tuple of dict with vertices
+    """
+    file = pd.read_csv(path_to_file)
+
+    first_elem = file.columns[0].split(' ')
+    graph_dict_no = {first_elem[0]: [first_elem[1]],
+                     first_elem[1]: [first_elem[0]]}  # graph is not oriented
+    graph_dict_o = {first_elem[0]: [first_elem[1]]}  # graph is oriented
+
+    for index, row in file.iterrows():
+        row = list(row)[0].split(' ')
+        vert1 = row[0]
+        vert2 = row[1]
+
+        if vert1 not in graph_dict_o.keys():   # for oriented graph
+            graph_dict_o[vert1] = [vert2]
+        else:
+            graph_dict_o[vert1].append(vert2)
+
+        if vert1 not in graph_dict_no.keys():   # for not oriented graph
+            graph_dict_no[vert1] = [vert2]
+        else:
+            graph_dict_no[vert1].append(vert2)
+        if vert2 not in graph_dict_no.keys():
+            graph_dict_no[vert2] = [vert1]
+        else:
+            graph_dict_no[vert2].append(vert1)
+
+    return graph_dict_o, graph_dict_no
+
+
+def ifconnected(graph_dict) -> bool:
+    """
+    check whether all vertices are interconnected or not
+    Args:
+        graph_dict: tuple of dict with vertices
+
+    Returns:
+        bool
+    >>> ifconnected({'1':["2"], '2':["1"], '3':['4']})
+    False
+    """
+    first_vert = list(graph_dict.keys())[0]
+    visited, queue = [first_vert], [first_vert]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex in list(graph_dict.keys()):
+            for neighbour in graph_dict[vertex]:
+                if neighbour not in visited:
+                    visited.append(neighbour)
+                    queue.append(neighbour)
+    for element in list(graph_dict.keys()):
+        if element not in visited:
+            return False
+    return True
 
 
 def adjacent_matrix(graph: dict, directed: bool) -> list:
@@ -201,3 +264,29 @@ def isomorphism_of_directed_graphs(graph_1: dict, graph_2: dict,) -> bool:
     array_1 = adjacent_matrix(graph_1, True)
     array_2 = adjacent_matrix(graph_2, True)
     return matrix_permutations_comparison(array_1, array_2)
+
+
+if __name__ == '__main__':
+    import pandas as pd
+    from itertools import permutations
+    import os.path
+    path_file_1 = 'graph1.csv'  # path to our csv file
+    path_file_2 = 'graph2.csv'
+
+    #  read information from csv
+    if os.path.exists(path_file_1) and os.path.exists(path_file_2):
+        graph1 = read_data(path_file_1)
+        graph2 = read_data(path_file_2)
+        not_oriented_graph_1 = graph1[1]
+        oriented_graph_1 = graph1[0]
+        not_oriented_graph_2 = graph2[1]
+        oriented_graph_2 = graph2[0]
+
+        # check if all verticals are connected
+        if not ifconnected(not_oriented_graph_1) or not ifconnected(not_oriented_graph_2):
+            print('the graph is not connected')
+        else:
+            print(
+                f'Graphs are isomorphic: {isomorphism_of_not_directed_graphs(not_oriented_graph_1, not_oriented_graph_2)}')
+    else:
+        print("file doesn't exist")
