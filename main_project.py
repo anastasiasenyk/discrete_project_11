@@ -144,24 +144,6 @@ def is_euler_possible_directed(graph_dict: dict) -> bool:
 
 
 def euler_circuit(graph_dict: dict, orientation: bool) -> list:
-    """
-    Returns Eulerian circuit in graph
-    Args:
-        graph_dict: dictionary where keys are vertices
-        and keys are lists of connected vertices
-        orientation: True if the graph is directed
-        False if not
-    Retuns:
-        list: list of vertices whiсh form Euler circuit
-        str: message that graph_dict is not connected
-    >>> euler_circuit({'1': ['4', '2'], \
-    '2': ['1', '3', '6', '5'], \
-    '3': ['2','4'], \
-    '4': ['1', '3'], \
-    '5': ['2', '6'], \
-    '6': ['2', '5']}, False)
-    ['1', '2', '5', '6', '2', '3', '4', '1']
-    """
 
     if orientation is False:
         if is_euler_possible_not_directed(graph_dict) is False:
