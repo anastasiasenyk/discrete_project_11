@@ -27,7 +27,7 @@ def coloring_rec(coloring: dict, vertices: list, vert_index: int, graph: dict) -
         vert_index: index of vertice in a list vertices
         graph: dict of vertices
     Returns:
-        bool: True if graph can be colored in three colors, False if not 
+        bool: True if graph can be colored in three colors, False if not
     >>> coloring_rec({'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0}, ['1', '2', '3', '4', '5', '6'], 0,{'1': ['2', '5', '4'], '2': ['1', '5', '3'], '3': \
     ['2', '6', '4'], '4': ['3', '6', '1'], '5': ['2', '1', '6'], '6': ['5', '3', '4']})
     True
@@ -68,7 +68,7 @@ def coloring_decision(graph: dict):
         coloring_dict[vert] = 0
     vertices = list(graph.keys())
 
-    if not coloring_rec(coloring_dict,  vertices, 0, graph):
+    if not coloring_rec(coloring_dict, vertices, 0, graph):
         return "This graph can't be colored by three colors"
 
     result = []
