@@ -184,9 +184,6 @@ def euler_circuit(graph_dict: dict, orientation: bool) -> list:
             elif orientation is True:
                 graph_dict[curr_vertex].remove(random_edge)
                 stack.append(random_edge)
-    for key in graph_dict:
-        if key not in circuit:
-            return "Graph is not connected"
     return circuit
 
 
