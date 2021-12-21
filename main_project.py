@@ -152,10 +152,12 @@ def is_euler_possible_directed(graph_dict: dict) -> bool:
 
 def euler_circuit(graph_dict: dict, orientation: bool) -> list:
     """
-    Returns Eulerian circuit in not directed graph
+    Returns Eulerian circuit in graph
     Args:
         graph_dict: dictionary where keys are vertices
         and keys are lists of connected vertices
+        orientation: True if the graph is directed
+        False if not
     Retuns:
         list: list of vertices whiсh form Euler circuit
         str: message that graph_dict is not connected
@@ -176,7 +178,7 @@ def euler_circuit(graph_dict: dict, orientation: bool) -> list:
             return "Graph has no Eulerial circuit"
     stack = [list(graph_dict.keys())[0]]
     circuit = []
-    while stack != []:
+    while stack:
         curr_vertex = stack[-1]
         if len(graph_dict[curr_vertex]) == 0:
             circuit.append(curr_vertex)
