@@ -101,6 +101,12 @@ __Function5:__ Olesia Omelchuk, Sofia Yamkova
 
 ![розм (1)](https://user-images.githubusercontent.com/96056537/146989432-f353544f-3d2b-45d4-a736-03b9efd47fb1.png)
 
+Приклад виводу:
+
+![image_2021-12-21_22-00-39](https://user-images.githubusercontent.com/96056537/146990941-e8ecb347-98c3-4318-82d4-ba26bde04157.png)
+
+![image_2021-12-21_22-01-43](https://user-images.githubusercontent.com/96056537/146990992-c75ad40d-e0ed-4f6f-a3f6-aaf440a948cf.png)
+
 ---
 #### Висновки
 
