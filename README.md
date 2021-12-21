@@ -63,11 +63,11 @@ __find hamiltonian cycle:__ Anastasia Senyk, Maksym Koliubinskyi
 
 ---
 __Function4:__ Olesia Omelchuk
-<a id="func6"></a>
+<a id="func4"></a>
 
 ---
-__Function5:__ Sofia Yamkova
-<a id="func7"></a>
+__Function5:__ Olesia Omelchuk, Sofia Yamkova
+<a id="func5"></a>
 
 ---
 #### Висновки
