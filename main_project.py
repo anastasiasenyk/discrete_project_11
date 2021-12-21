@@ -10,8 +10,6 @@ def read_data(path_to_file: str) -> Optional[tuple]:
     Returns:
         graph_dict: tuple of dict with vertices
     """
-    if not os.path.exists(path_to_file):
-        return print("file doesn't exist")
     file = pd.read_csv(path_to_file)
     
     first_elem = file.columns[0].split(' ')
@@ -259,11 +257,11 @@ if __name__ == '__main__':
     import pandas as pd
     import os.path
     path_file = 'graph.csv'  # path to our csv file
-    # path_file = 'hamiltonian_20_151_try1.csv'
+
 
     #  read information from csv
-    graphs = read_data(path_file)
-    if isinstance(graphs, tuple):
+    if not os.path.exists(path_file):
+        graphs = read_data(path_file)
         not_oriented_graph = graphs[1]
         oriented_graph = graphs[0]
 
@@ -273,8 +271,11 @@ if __name__ == '__main__':
             #  our functions
             print(f'Graph is bipartite - {bipartite(not_oriented_graph)}')
             #  euler
-            print(f'Euler cycle for directed graph - {euler_circuit(read_data(path_file)[0], True)}')
-            print(f'Euler cycle for not directed graph - {euler_circuit(read_data(path_file)[1], False)}')
+            print(f'Euler cycle for directed graph - {euler_circuit_directed(read_data(path_file)[0])}')
+            print(f'Euler cycle for not directed graph - {euler_circuit_not_directed(read_data(path_file)[1])}')
             #  hamilton
             print(f"Hamiltonian Cycle for not connected graph: {pre_hamilton(not_oriented_graph, False)}")
             print(f"Hamiltonian Cycle for connected graph: {pre_hamilton(oriented_graph, True)}")
+    else:
+        print("file doesn't exist")
+ 
